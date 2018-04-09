@@ -12,6 +12,4 @@ interface MenuContract{
         fun view(view: MenuContract.View)
         fun loadMenu()
     }
-
-
 }

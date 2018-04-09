@@ -7,15 +7,12 @@ class Order: Serializable {
 
     @SerializedName("id")
     var id: Int? = null
-    @SerializedName("name")
-    var name: String? = null
-    @SerializedName("ingredients")
-    var ingredients: MutableList<Int>? = null
-    @SerializedName("image")
-    var image: String? = null
+    @SerializedName("id_sandwich")
+    var idSandwich: Int? = null
+    @SerializedName("extras")
+    var extras: MutableList<Int>? = null
 
     override fun toString(): String {
-        return "Sandwich(id=$id, name=$name, ingredients=$ingredients, image=$image)"
+        return "Order(id=$id, idSandwich=$idSandwich, extras=$extras)"
     }
-
 }

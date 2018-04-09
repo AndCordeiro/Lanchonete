@@ -7,13 +7,13 @@ class Promotion: Serializable {
 
     @SerializedName("id")
     var id: Int? = null
-    @SerializedName("id_sandwich")
-    var idSandwich: String? = null
-    @SerializedName("extras")
-    var extras: MutableList<Int>? = null
+    @SerializedName("name")
+    var name: String? = null
+    @SerializedName("description")
+    var description: String? = null
 
     override fun toString(): String {
-        return "Promotion(id=$id, idSandwich=$idSandwich, extras=$extras)"
+        return "Promotion(id=$id, name=$name, description=$description)"
     }
 
 }
