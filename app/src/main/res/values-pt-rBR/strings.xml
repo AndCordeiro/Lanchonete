@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lanchonete</string>
+    <string name="menu_order">Pedido</string>
+    <string name="menu_promotion">Promoção</string>
+    <string name="menu_menu">Cardápio</string>
+    <string name="list_ingredients">"Ingredientes: "</string>
+    <string name="price">Preço:</string>
+    <string name="order_title">Pedido</string>
+    <string name="promotion_title">Promoção</string>
+    <string name="menu_title">Cardápio</string>
+</resources>

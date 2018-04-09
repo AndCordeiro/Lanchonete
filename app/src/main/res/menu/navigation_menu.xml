@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu"
+        android:icon="@drawable/ic_restaurant_menu_white_24dp"
+        android:title="@string/menu_menu"/>
+
+    <item
+        android:id="@+id/promotion"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title="@string/menu_promotion"/>
+
+    <item
+        android:id="@+id/order"
+        android:icon="@drawable/ic_add_shopping_cart_white_24dp"
+        android:title="@string/menu_order"/>
+</menu>
