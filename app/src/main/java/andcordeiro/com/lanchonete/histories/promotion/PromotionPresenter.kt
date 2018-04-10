@@ -5,14 +5,14 @@ import rx.android.schedulers.AndroidSchedulers
 
 class PromotionPresenter(private var view : PromotionContract.View) : PromotionContract.Presenter{
 
-    private var subscriptionMenu: Subscription? = null
+    private var subscriptionPromotion: Subscription? = null
     private val model by lazy { PromotionModelImpl() }
 
     override fun create() {}
 
     override fun destroy() {
-        if(subscriptionMenu != null && !subscriptionMenu!!.isUnsubscribed){
-            subscriptionMenu!!.unsubscribe()
+        if(subscriptionPromotion != null && !subscriptionPromotion!!.isUnsubscribed){
+            subscriptionPromotion!!.unsubscribe()
         }
     }
 
@@ -23,7 +23,7 @@ class PromotionPresenter(private var view : PromotionContract.View) : PromotionC
     }
 
     override fun loadPromotion() {
-        subscriptionMenu = model.loadPromotionAsync()
+        subscriptionPromotion = model.loadPromotionAsync()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({view.promotions(it); model.getLastException()})
     }

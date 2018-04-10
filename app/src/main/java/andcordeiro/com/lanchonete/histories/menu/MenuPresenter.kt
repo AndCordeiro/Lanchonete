@@ -1,5 +1,6 @@
 package andcordeiro.com.lanchonete.histories.menu
 
+import andcordeiro.com.lanchonete.entities.Ingredient
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 
@@ -25,6 +26,12 @@ class MenuPresenter(private var view : MenuContract.View) : MenuContract.Present
     override fun loadMenu() {
         subscriptionMenu = model.loadMenuAsync()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({view.sandwiches(it); model.getLastException()})
+                .subscribe({view.sandwiches(it)})
     }
+
+    override fun priceSandwich(ingredients: List<Ingredient>?): Double? = model.priceSandwich(ingredients)
+
+
+
+
 }

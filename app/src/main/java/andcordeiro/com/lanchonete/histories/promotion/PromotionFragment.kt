@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +51,6 @@ class PromotionFragment : Fragment(), PromotionContract.View, PromotionAdapter.O
     }
 
     override fun promotions(promotions: List<Promotion>) {
-        Log.e("teste", promotions.toString())
         adapter = PromotionAdapter(promotions as MutableList<Promotion>, this)
         recyclerView.adapter = adapter
         pb.gone()

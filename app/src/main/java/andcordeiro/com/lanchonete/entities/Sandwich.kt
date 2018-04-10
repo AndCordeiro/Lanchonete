@@ -13,21 +13,9 @@ class Sandwich: Serializable {
     var ingredients: MutableList<Ingredient>? = null
     @SerializedName("image")
     var image: String? = null
+    var price: Double? = null
 
     override fun toString(): String {
-        return "Sandwich(id=$id, name=$name, ingredients=$ingredients, image=$image)"
-    }
-
-    companion object {
-        fun getIngredientsName(ingredients: List<Ingredient>?): String{
-            val nameIngredients = StringBuilder()
-            ingredients?.forEach { ingredient: Ingredient? ->
-                nameIngredients.append(ingredient?.name).append(", ")
-            }
-            if (nameIngredients.isNotEmpty()) {
-                nameIngredients.deleteCharAt(nameIngredients.length - 2)
-            }
-            return nameIngredients.toString()
-        }
+        return "Sandwich(id=$id, name=$name, ingredients=$ingredients, image=$image, price=$price)"
     }
 }

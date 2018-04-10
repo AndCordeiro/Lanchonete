@@ -50,9 +50,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openFragment(fragment: Fragment) {
+        val args = Bundle()
+        args.putString("NAME", MainActivity::class.java.name)
+        fragment.arguments = args
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fl_container, fragment)
-        transaction.addToBackStack(null)
         transaction.commit()
     }
 }

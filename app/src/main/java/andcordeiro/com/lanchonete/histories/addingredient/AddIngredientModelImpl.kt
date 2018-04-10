@@ -1,7 +1,6 @@
-package andcordeiro.com.lanchonete.histories.menu
+package andcordeiro.com.lanchonete.histories.addingredient
 
 import andcordeiro.com.lanchonete.entities.Ingredient
-import andcordeiro.com.lanchonete.entities.Sandwich
 import andcordeiro.com.lanchonete.system.extensions.makeObservable
 import andcordeiro.com.lanchonete.system.retrofit.Api
 import andcordeiro.com.lanchonete.system.retrofit.ApiProvider
@@ -10,7 +9,8 @@ import rx.Observable
 import rx.schedulers.Schedulers
 import java.util.concurrent.Callable
 
-class MenuModelImpl: MenuModel {
+class AddIngredientModelImpl: AddIngredientModel {
+
 
     private var lastError:String? = null
     private var lastException: Exception? = null
@@ -20,14 +20,14 @@ class MenuModelImpl: MenuModel {
 
     private val api: Api = ApiProvider.api()
 
-    override fun loadMenu(): List<Sandwich> {
-        var sandwiches = ArrayList<Sandwich>()
+    override fun loadIngredient(): List<Ingredient> {
+        var promotions = ArrayList<Ingredient>()
 
         try {
-            val callback: Response<List<Sandwich>> =
-                    api.getSandwich().execute()
+            val callback: Response<List<Ingredient>> =
+                    api.getIngredient().execute()
             if (callback.isSuccessful) {
-                sandwiches = callback.body() as ArrayList<Sandwich>
+                promotions = callback.body() as ArrayList<Ingredient>
             }else{
                 lastError = callback.message()
             }
@@ -35,18 +35,10 @@ class MenuModelImpl: MenuModel {
             lastException = e
             e.printStackTrace()
         }
-        return sandwiches
+        return promotions
     }
 
-    override fun loadMenuAsync(): Observable<List<Sandwich>> {
-        return makeObservable(Callable {loadMenu()}).subscribeOn(Schedulers.computation())
-    }
-
-    override fun priceSandwich(ingredients: List<Ingredient>?): Double? {
-        var price = 0.0
-        ingredients?.forEach { ingredient: Ingredient? ->
-            price += ingredient?.price!!
-        }
-        return price
+    override fun loadIngredientAsync(): Observable<List<Ingredient>> {
+        return makeObservable(Callable {loadIngredient()}).subscribeOn(Schedulers.computation())
     }
 }

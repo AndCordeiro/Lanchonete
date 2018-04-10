@@ -10,5 +10,8 @@
     <string name="menu_title">Menu</string>
     <string name="promotion_title">Promotion</string>
     <string name="order_title">Order</string>
+    <string name="add_order_title">Add Order</string>
+    <string name="customize">Customize</string>
+    <string name="add_ingredient_title">Add Ingredient</string>
 
 </resources>
