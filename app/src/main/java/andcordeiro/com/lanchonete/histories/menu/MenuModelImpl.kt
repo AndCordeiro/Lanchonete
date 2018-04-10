@@ -5,10 +5,12 @@ import andcordeiro.com.lanchonete.entities.Sandwich
 import andcordeiro.com.lanchonete.system.extensions.makeObservable
 import andcordeiro.com.lanchonete.system.retrofit.Api
 import andcordeiro.com.lanchonete.system.retrofit.ApiProvider
+import com.google.gson.Gson
 import retrofit2.Response
 import rx.Observable
 import rx.schedulers.Schedulers
 import java.util.concurrent.Callable
+
 
 class MenuModelImpl: MenuModel {
 
@@ -40,6 +42,29 @@ class MenuModelImpl: MenuModel {
 
     override fun loadMenuAsync(): Observable<List<Sandwich>> {
         return makeObservable(Callable {loadMenu()}).subscribeOn(Schedulers.computation())
+    }
+
+    override fun setOrder(sandwich: Sandwich): Int? {
+        try {
+            var extras = ArrayList<Ingredient>()
+            sandwich.extras?.forEach(){
+                extras.add(it)
+            }
+            val callback= api.setOrder(sandwich.id.toString(), Gson().toJson(extras)).execute()
+            if (callback.isSuccessful) {
+                callback.message()
+            }else{
+                lastError = callback.message()
+            }
+        }catch (e: Exception){
+            lastException = e
+            e.printStackTrace()
+        }
+        return 1
+    }
+
+    override fun setOrderAsync(sandwich: Sandwich): Observable<Int>? {
+        return makeObservable(Callable {setOrder(sandwich)!!}).subscribeOn(Schedulers.computation())
     }
 
     override fun priceSandwich(ingredients: List<Ingredient>?): Double? {

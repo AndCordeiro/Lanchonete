@@ -9,4 +9,13 @@
     <string name="order_title">Pedido</string>
     <string name="promotion_title">Promoção</string>
     <string name="menu_title">Cardápio</string>
+    <string name="connect_internet">Por favor, conecte a internet!</string>
+    <string name="no_promotions">Sem promoções</string>
+    <string name="empty_cart">Sem pedidos</string>
+    <string name="add_order">Pedido adicionado</string>
+    <string name="add_order_title">Adicionar pedido</string>
+    <string name="customize">Personalizar</string>
+    <string name="add_ingredient_title">Adicionar Ingredient</string>
+    <string name="finish">Finalizar</string>
+    <string name="add_text">Adicionado</string>
 </resources>

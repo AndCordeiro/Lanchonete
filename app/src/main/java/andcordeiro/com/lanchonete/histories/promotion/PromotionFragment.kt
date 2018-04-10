@@ -4,6 +4,7 @@ import andcordeiro.com.lanchonete.R
 import andcordeiro.com.lanchonete.entities.Promotion
 import andcordeiro.com.lanchonete.system.extensions.find
 import andcordeiro.com.lanchonete.system.extensions.gone
+import andcordeiro.com.lanchonete.system.extensions.isConnected
 import andcordeiro.com.lanchonete.system.extensions.show
 import andcordeiro.com.lanchonete.system.mvp.PresenterHolder
 import android.content.Context
@@ -16,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 
 class PromotionFragment : Fragment(), PromotionContract.View, PromotionAdapter.OnClickListener {
 
@@ -42,17 +44,26 @@ class PromotionFragment : Fragment(), PromotionContract.View, PromotionAdapter.O
     private fun initViews() {
         layoutManager = LinearLayoutManager(context())
         recyclerView.layoutManager = layoutManager
-        loadPromotion()
         pb.show()
+        loadPromotion()
     }
 
     private fun loadPromotion(){
-        presenter?.loadPromotion()
+        if(isConnected(context())) {
+            presenter?.loadPromotion()
+        }else{
+            pb.gone()
+            Toast.makeText(context, getString(R.string.connect_internet), Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun promotions(promotions: List<Promotion>) {
-        adapter = PromotionAdapter(promotions as MutableList<Promotion>, this)
-        recyclerView.adapter = adapter
+        if(!promotions.isEmpty()){
+            adapter = PromotionAdapter(promotions as MutableList<Promotion>, this)
+            recyclerView.adapter = adapter
+        }else{
+            Toast.makeText(context, getString(R.string.no_promotions), Toast.LENGTH_SHORT).show()
+        }
         pb.gone()
     }
 

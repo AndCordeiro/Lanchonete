@@ -11,6 +11,10 @@ interface MenuModel: Model{
 
     fun loadMenuAsync(): Observable<List<Sandwich>>
 
+    fun setOrder(sandwich: Sandwich): Int?
+
+    fun setOrderAsync(sandwich: Sandwich): Observable<Int>?
+
     fun priceSandwich(ingredients: List<Ingredient>?): Double?
 
 }

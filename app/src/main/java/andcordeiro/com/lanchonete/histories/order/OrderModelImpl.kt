@@ -1,5 +1,6 @@
 package andcordeiro.com.lanchonete.histories.order
 
+import andcordeiro.com.lanchonete.entities.Ingredient
 import andcordeiro.com.lanchonete.entities.Order
 import andcordeiro.com.lanchonete.system.extensions.makeObservable
 import andcordeiro.com.lanchonete.system.retrofit.Api
@@ -40,5 +41,37 @@ class OrderModelImpl: OrderModel {
 
     override fun loadOrderAsync(): Observable<List<Order>> {
         return makeObservable(Callable {loadOrder()}).subscribeOn(Schedulers.computation())
+    }
+
+    override fun priceSandwich(ingredients: List<Ingredient>?): Double? {
+        var price = 0.0
+        var countA = 0
+        var countB = 0
+        var countC = 0
+        var countQ = 0
+
+        ingredients?.forEach { ingredient: Ingredient? ->
+            price += ingredient?.price!!
+            when(ingredient.id){
+                1 -> countA++
+                2 -> countB++
+                3 -> countC++
+                5 -> countQ++
+            }
+        }
+
+        if(countC >= 3){
+            price = (price - (countC * 3)) + ((countC - (countC/3)) * 3 )
+        }
+
+        if(countQ >= 3){
+            price = (price - (countQ * 1.5)) + ((countQ - (countQ/3)) * 1.5 )
+        }
+
+        if(countA > 0 && countB == 0){
+            price = price - (price * .10)
+        }
+
+        return price
     }
 }

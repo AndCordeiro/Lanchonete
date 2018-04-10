@@ -1,10 +1,12 @@
 package andcordeiro.com.lanchonete.histories.order
 
 import andcordeiro.com.lanchonete.R
+import andcordeiro.com.lanchonete.entities.Ingredient
 import andcordeiro.com.lanchonete.entities.Order
 import andcordeiro.com.lanchonete.histories.addorder.AddOrderActivity
 import andcordeiro.com.lanchonete.system.extensions.find
 import andcordeiro.com.lanchonete.system.extensions.gone
+import andcordeiro.com.lanchonete.system.extensions.isConnected
 import andcordeiro.com.lanchonete.system.extensions.show
 import andcordeiro.com.lanchonete.system.mvp.PresenterHolder
 import android.content.Context
@@ -18,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 
 class OrderFragment : Fragment(), OrderContract.View, OrderAdapter.OnClickListener {
 
@@ -47,17 +50,32 @@ class OrderFragment : Fragment(), OrderContract.View, OrderAdapter.OnClickListen
         recyclerView.layoutManager = layoutManager
         fab.bringToFront()
         fab.setOnClickListener { startActivity(Intent(context(), AddOrderActivity::class.java)) }
-        loadOrder()
+    }
+
+    override fun onResume() {
+        super.onResume()
         pb.show()
+        loadOrder()
     }
 
     private fun loadOrder(){
-        presenter?.loadOrder()
+        if(isConnected(context())) {
+            presenter?.loadOrder()
+        }else{
+            pb.gone()
+            Toast.makeText(context, getString(R.string.connect_internet), Toast.LENGTH_SHORT).show()
+        }
     }
 
+    override fun priceSandwich(ingredients: List<Ingredient>?): Double? = presenter?.priceSandwich(ingredients)
+
     override fun orders(orders: List<Order>) {
-        adapter = OrderAdapter(orders as MutableList<Order>, this)
-        recyclerView.adapter = adapter
+        if(!orders.isEmpty()){
+            adapter = OrderAdapter(orders as MutableList<Order>, this, this)
+            recyclerView.adapter = adapter
+        }else{
+            Toast.makeText(context, getString(R.string.empty_cart), Toast.LENGTH_SHORT).show()
+        }
         pb.gone()
     }
 

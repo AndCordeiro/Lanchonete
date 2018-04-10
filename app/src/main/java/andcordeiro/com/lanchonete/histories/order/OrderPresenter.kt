@@ -1,9 +1,11 @@
 package andcordeiro.com.lanchonete.histories.order
 
+import andcordeiro.com.lanchonete.entities.Ingredient
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 
 class OrderPresenter(private var view : OrderContract.View) : OrderContract.Presenter{
+
 
     private var subscriptionOrder: Subscription? = null
     private val model by lazy { OrderModelImpl() }
@@ -21,6 +23,8 @@ class OrderPresenter(private var view : OrderContract.View) : OrderContract.Pres
     override fun view(view: OrderContract.View) {
         this.view = view
     }
+
+    override fun priceSandwich(ingredients: List<Ingredient>?): Double?  = model.priceSandwich(ingredients)
 
     override fun loadOrder() {
         subscriptionOrder = model.loadOrderAsync()

@@ -8,11 +8,13 @@ interface MenuContract{
     interface View: andcordeiro.com.lanchonete.system.mvp.View{
         fun sandwiches(sandwiches: List<Sandwich>)
         fun priceSandwich(ingredients: List<Ingredient>?): Double?
+        fun addOrder()
     }
 
     interface Presenter: andcordeiro.com.lanchonete.system.mvp.Presenter {
         fun view(view: MenuContract.View)
         fun priceSandwich(ingredients: List<Ingredient>?): Double?
         fun loadMenu()
+        fun setOrder(sandwich: Sandwich)
     }
 }

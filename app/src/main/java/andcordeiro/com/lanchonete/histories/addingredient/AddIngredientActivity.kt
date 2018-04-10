@@ -5,6 +5,7 @@ import andcordeiro.com.lanchonete.entities.Ingredient
 import andcordeiro.com.lanchonete.entities.Sandwich
 import andcordeiro.com.lanchonete.system.extensions.find
 import andcordeiro.com.lanchonete.system.extensions.gone
+import andcordeiro.com.lanchonete.system.extensions.isConnected
 import andcordeiro.com.lanchonete.system.extensions.show
 import andcordeiro.com.lanchonete.system.mvp.PresenterHolder
 import android.content.Context
@@ -45,8 +46,8 @@ class AddIngredientActivity : AppCompatActivity(), AddIngredientContract.View, A
     private fun initViews() {
         layoutManager = LinearLayoutManager(context())
         recyclerView.layoutManager = layoutManager
-        loadIngredient()
         pb.show()
+        loadIngredient()
         mPrefs = this.getSharedPreferences(getString(R.string.preferences_key), MODE_PRIVATE)
         data = Gson().fromJson(mPrefs?.getString(getString(R.string.preferences_data_key), ""), Sandwich::class.java)
         this.data?.extras = ArrayList<Ingredient>()
@@ -71,7 +72,12 @@ class AddIngredientActivity : AppCompatActivity(), AddIngredientContract.View, A
     }
 
     private fun loadIngredient() {
-        presenter?.loadIngredient()
+        if(isConnected(context())) {
+            presenter?.loadIngredient()
+        }else{
+            pb.gone()
+            Toast.makeText(this, getString(R.string.connect_internet), Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun ingredient(ingredients: List<Ingredient>) {

@@ -7,6 +7,7 @@ import andcordeiro.com.lanchonete.histories.addingredient.AddIngredientActivity
 import andcordeiro.com.lanchonete.histories.addorder.AddOrderActivity
 import andcordeiro.com.lanchonete.system.extensions.find
 import andcordeiro.com.lanchonete.system.extensions.gone
+import andcordeiro.com.lanchonete.system.extensions.isConnected
 import andcordeiro.com.lanchonete.system.extensions.show
 import andcordeiro.com.lanchonete.system.mvp.PresenterHolder
 import android.content.Context
@@ -22,6 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import com.google.gson.Gson
 
 
@@ -55,12 +57,18 @@ class MenuFragment : Fragment(), MenuContract.View, MenuAdapter.OnClickListener 
         mPrefs = activity?.getSharedPreferences(getString(R.string.preferences_key), MODE_PRIVATE)
         layoutManager = LinearLayoutManager(context())
         recyclerView.layoutManager = layoutManager
-        loadMenu()
         pb.show()
+        loadMenu()
     }
 
     private fun loadMenu(){
-        presenter?.loadMenu()
+        if(isConnected(context())){
+            presenter?.loadMenu()
+        }else{
+            pb.gone()
+            Toast.makeText(context, getString(R.string.connect_internet), Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     override fun sandwiches(sandwiches: List<Sandwich>) {
@@ -92,8 +100,13 @@ class MenuFragment : Fragment(), MenuContract.View, MenuAdapter.OnClickListener 
 
     override fun onItemClick(data: Sandwich) {
         if(arguments?.getString(getString(R.string.name_args)).equals(AddOrderActivity::class.java.name)){
-            
+            presenter?.setOrder(data)
         }
+    }
+
+    override fun addOrder() {
+        Toast.makeText(context(), getString(R.string.add_order), Toast.LENGTH_SHORT).show()
+        activity?.finish()
     }
 
     override fun onLongItemClick(data: Sandwich) {}

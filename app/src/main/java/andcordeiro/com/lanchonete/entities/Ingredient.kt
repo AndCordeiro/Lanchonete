@@ -3,7 +3,9 @@ package andcordeiro.com.lanchonete.entities
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class Ingredient: Serializable {
+class Ingredient(idIngredient: Int, nameIngredient: String, priceIngredient: Double, imageIngredient: String?): Serializable {
+
+
 
     @SerializedName("id")
     var id: Int? = null
@@ -13,6 +15,13 @@ class Ingredient: Serializable {
     var price: Double? = null
     @SerializedName("image")
     var image: String? = null
+
+    init {
+        id = idIngredient
+        name = nameIngredient
+        price = priceIngredient
+        image = imageIngredient
+    }
 
     override fun toString(): String {
         return "Ingredient(id=$id, name=$name, price=$price, image=$image)"
