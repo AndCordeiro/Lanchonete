@@ -44,9 +44,35 @@ class MenuModelImpl: MenuModel {
 
     override fun priceSandwich(ingredients: List<Ingredient>?): Double? {
         var price = 0.0
+        var countA = 0
+        var countB = 0
+        var countC = 0
+        var countQ = 0
+
         ingredients?.forEach { ingredient: Ingredient? ->
             price += ingredient?.price!!
+            when(ingredient.id){
+                1 -> countA++
+                2 -> countB++
+                3 -> countC++
+                5 -> countQ++
+            }
         }
+
+        if(countC >= 3){
+            price = (price - (countC * 3)) + ((countC - (countC/3)) * 3 )
+        }
+
+        if(countQ >= 3){
+            price = (price - (countQ * 1.5)) + ((countQ - (countQ/3)) * 1.5 )
+        }
+
+        if(countA > 0 && countB == 0){
+            price = price - (price * .10)
+        }
+
         return price
     }
+
+
 }

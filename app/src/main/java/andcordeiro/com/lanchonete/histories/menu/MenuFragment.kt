@@ -4,20 +4,26 @@ import andcordeiro.com.lanchonete.R
 import andcordeiro.com.lanchonete.entities.Ingredient
 import andcordeiro.com.lanchonete.entities.Sandwich
 import andcordeiro.com.lanchonete.histories.addingredient.AddIngredientActivity
+import andcordeiro.com.lanchonete.histories.addorder.AddOrderActivity
 import andcordeiro.com.lanchonete.system.extensions.find
 import andcordeiro.com.lanchonete.system.extensions.gone
 import andcordeiro.com.lanchonete.system.extensions.show
 import andcordeiro.com.lanchonete.system.mvp.PresenterHolder
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import com.google.gson.Gson
+
 
 class MenuFragment : Fragment(), MenuContract.View, MenuAdapter.OnClickListener {
 
@@ -26,6 +32,10 @@ class MenuFragment : Fragment(), MenuContract.View, MenuAdapter.OnClickListener 
     private var presenter: MenuPresenter? = null
     private var layoutManager: LinearLayoutManager? = null
     private var adapter: MenuAdapter? = null
+    var mPrefs: SharedPreferences? = null
+    private var sandwich: Sandwich? = null
+    private var data: MutableList<Sandwich>? = null
+
 
     companion object {
         fun newInstance(): MenuFragment = MenuFragment()
@@ -42,6 +52,7 @@ class MenuFragment : Fragment(), MenuContract.View, MenuAdapter.OnClickListener 
     }
 
     private fun initViews() {
+        mPrefs = activity?.getSharedPreferences(getString(R.string.preferences_key), MODE_PRIVATE)
         layoutManager = LinearLayoutManager(context())
         recyclerView.layoutManager = layoutManager
         loadMenu()
@@ -53,20 +64,45 @@ class MenuFragment : Fragment(), MenuContract.View, MenuAdapter.OnClickListener 
     }
 
     override fun sandwiches(sandwiches: List<Sandwich>) {
-        adapter = MenuAdapter(arguments?.getString("NAME"),this, sandwiches as MutableList<Sandwich>, this)
+        this.data = sandwiches as MutableList<Sandwich>
+        adapter = MenuAdapter(arguments?.getString(getString(R.string.name_args)),this, sandwiches as MutableList<Sandwich>, this)
         recyclerView.adapter = adapter
         pb.gone()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        update()
+    }
+
+    private fun update(){
+        if(mPrefs != null && arguments?.getString(getString(R.string.name_args)).equals(AddOrderActivity::class.java.name)){
+            mPrefs = activity?.getSharedPreferences(getString(R.string.preferences_key), AppCompatActivity.MODE_PRIVATE)
+            sandwich = Gson().fromJson(mPrefs?.getString(getString(R.string.preferences_data_key), ""), Sandwich::class.java)
+            if(sandwich?.extras != null){
+                adapter?.update(this.data as List<Sandwich>, sandwich)
+                adapter?.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun intent(): Intent = activity!!.intent
 
     override fun context(): Context = activity!!.baseContext
 
-    override fun onItemClick(data: Sandwich) {}
+    override fun onItemClick(data: Sandwich) {
+        if(arguments?.getString(getString(R.string.name_args)).equals(AddOrderActivity::class.java.name)){
+            
+        }
+    }
 
     override fun onLongItemClick(data: Sandwich) {}
 
     override fun onButtonClick(data: Sandwich) {
+        val dataString: String? = Gson().toJson(data)
+        val editor: SharedPreferences.Editor? = mPrefs?.edit()
+        editor?.putString(getString(R.string.preferences_data_key), dataString)
+        editor?.apply()
         startActivity(Intent(context(), AddIngredientActivity::class.java))
     }
 

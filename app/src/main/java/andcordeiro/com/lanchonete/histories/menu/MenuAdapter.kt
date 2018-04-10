@@ -26,11 +26,12 @@ class MenuAdapter(private var className: String?, private var view: MenuContract
         holder.tvName.text = data.name
         holder.tvIngredients.text = Ingredient.getIngredientsName(data.ingredients)
         holder.ivSandwich.loadImage(data.image)
-        holder.tvPrice.text = view.priceSandwich(data.ingredients).toString()
+        holder.tvPrice.text = "%.2f".format(view.priceSandwich(data.ingredients))
         if(className.equals(AddOrderActivity::class.java.name)){
             holder.llCustomize.show()
             holder.btnCustomize.setOnClickListener{onClickListener?.onButtonClick(this.data[position])}
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -43,6 +44,19 @@ class MenuAdapter(private var className: String?, private var view: MenuContract
         fun onLongItemClick(data: Sandwich)
 
         fun onButtonClick(data: Sandwich)
+    }
+
+    fun update(data: List<Sandwich>, sandwich: Sandwich?){
+        data.forEach {
+            if(it.id == sandwich?.id){
+                it.extras = sandwich?.extras
+                if(!it.name!!.contains(" - do seu jeito")){
+                    it.name += " - do seu jeito"
+                }
+                it.ingredients?.addAll(sandwich?.extras as Iterable<Ingredient>)
+            }
+        }
+        this.data = data as MutableList<Sandwich>
     }
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {

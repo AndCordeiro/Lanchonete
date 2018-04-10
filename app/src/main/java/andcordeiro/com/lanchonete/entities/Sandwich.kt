@@ -13,9 +13,11 @@ class Sandwich: Serializable {
     var ingredients: MutableList<Ingredient>? = null
     @SerializedName("image")
     var image: String? = null
-    var price: Double? = null
+    @SerializedName("extras")
+    var extras: MutableList<Ingredient>? = null
 
     override fun toString(): String {
-        return "Sandwich(id=$id, name=$name, ingredients=$ingredients, image=$image, price=$price)"
+        return "Sandwich(id=$id, name=$name, ingredients=$ingredients, image=$image, extras=$extras)"
     }
+
 }

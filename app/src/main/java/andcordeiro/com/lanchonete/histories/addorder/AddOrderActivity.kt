@@ -22,7 +22,7 @@ class AddOrderActivity : AppCompatActivity() {
 
     private fun openFragment(fragment: Fragment) {
         val args = Bundle()
-        args.putString("NAME", AddOrderActivity::class.java.name)
+        args.putString(getString(R.string.name_args), AddOrderActivity::class.java.name)
         fragment.arguments = args
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fl_container, fragment)
