@@ -8,7 +8,7 @@ class ApiProvider {
     companion object {
         fun api():Api{
             val retrofit = Retrofit.Builder()
-                    .baseUrl("http://192.168.0.164:8010/api/")
+                    .baseUrl("http://10.0.2.2:8080/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
 
