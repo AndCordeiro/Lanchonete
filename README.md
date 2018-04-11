@@ -1,4 +1,4 @@
-# Lanchonete
+# Snack Bar
 
 Test application.
 Application for ordering snacks
